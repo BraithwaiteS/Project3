@@ -24,6 +24,7 @@
     "if-env": "^1.0.4",
     "materialize": "^1.0.0",
     "materialize-css": "^1.0.0",
+    "mysql2": "^1.6.5",
     "react-router-dom": "^5.0.0",
     "sequelize": "^5.2.11"
   }
