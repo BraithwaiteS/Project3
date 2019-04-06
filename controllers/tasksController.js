@@ -1,6 +1,6 @@
 const db = require("../models");
 
-// Defining methods for the booksController
+// Defining methods for the tasksController
 // This is mongoose!  Update to Sequelize!!!
 module.exports = {
   findAll: function(req, res) {
