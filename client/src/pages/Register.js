@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+import RegisterPage from "../components/RegisterPage";
 class Register extends Component {
   render() {
     return (
       <div>
-        <h1>hello</h1>
+        <RegisterPage />
       </div>
     );
   }
