@@ -1,7 +1,10 @@
+// Routes
+// =============================================================
 // Requiring our Todo model
 var db = require("../../models");
 const router = require("express").Router();
 
+// Get route for returning a specific user
 router.get("/tasks", function(req, res) {
   db.Task.findAll({
     where: {
@@ -42,59 +45,3 @@ router.post("/task", function(req, res) {
 
 module.exports = router;
 
-// Routes
-// =============================================================
-// module.exports = function(app) {
-
-
-//   // Get route for returning a specific user
-//   app.get("/api/tasks", function(req, res) {
-//     db.Task.findAll({
-//       where: {
-//        UserId: req.query.userId
-//       }
-//     })
-//       .then(function(dbTask) {
-//         res.json(dbTask);
-//       });
-//   });
-  
-
-//   // Get route for retrieving a single task
-//   app.get("/api/task/:id", function(req, res) {
-//     db.Task.findOne({
-//       where: {
-//         id: req.params.id
-//       }
-//     })
-//       .then(function(dbTask) {
-//         res.json(dbTask);
-//       });
-//   });
-
-
-//   // DELETE route for deleting task
-//   app.delete("/api/task/:id", function(req, res) {
-//     db.Task.destroy({
-//       where: {
-//         id: req.params.id
-//       }
-//     })
-//       .then(function(dbTask) {
-//         res.json(dbTask);
-//       });
-//   });
-
-//   // PUT route for updating task
-//   app.put("/api/task", function(req, res) {
-//     db.Task.update(req.body,
-//       {
-//         where: {
-//           id: req.body.id
-//         }
-//       })
-//       .then(function(dbTask) {
-//         res.json(dbTask);
-//       });
-//   });
-// };
