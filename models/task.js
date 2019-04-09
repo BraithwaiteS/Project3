@@ -23,7 +23,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       defaultValue: "N",
       validate: {
-        is: ["Y", "y", "N", "n"]
+        isIn: [['y', 'n', 'Y', 'N']]
       }
     }
   });
