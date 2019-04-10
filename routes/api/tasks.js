@@ -8,12 +8,11 @@ const router = require("express").Router();
 router.get("/tasks", function(req, res) {
   db.Task.findAll({
     where: {
-     UserId: req.query.userId
+      UserId: req.query.userId
     }
-  })
-    .then(function(dbTask) {
-      res.json(dbTask);
-    });
+  }).then(function(dbTask) {
+    res.json(dbTask);
+  });
 });
 
 // POST route for saving a new task
@@ -26,22 +25,32 @@ router.post("/task", function(req, res) {
   })
     .then(function(dbTask) {
       res.json(dbTask);
-    }).catch(function(error) {
-      res.send(error)
     })
+    .catch(function(error) {
+      res.send(error);
+    });
 });
 
-  // DELETE route for deleting task
-  router.delete("/task", function(req, res) {
-    db.Task.destroy({
-      where: {
-        id: req.query.id
-      }
-    })
-      .then(function(dbTask) {
-        res.json(dbTask);
-      });
+// DELETE route for deleting task
+router.delete("/task", function(req, res) {
+  db.Task.destroy({
+    where: {
+      id: req.query.id
+    }
+  }).then(function(dbTask) {
+    res.json(dbTask);
   });
+});
+
+// PUT route for updating task
+router.put("/task", function(req, res) {
+  db.Task.update(req.body, {
+    where: {
+      id: req.body.id
+    }
+  }).then(function(dbTask) {
+    res.json(dbTask);
+  });
+});
 
 module.exports = router;
-

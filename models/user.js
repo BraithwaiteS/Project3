@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false
     },
-    emial: {
+    email: {
       type: DataTypes.TEXT,
       allowNull: false,
       validate: {
