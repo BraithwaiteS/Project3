@@ -4,7 +4,8 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <HomePage/>
+        <h1>Home</h1>
+        <button onClick={this.props.handleFormSubmit}>Click Me</button>
       </div>
     );
   }
