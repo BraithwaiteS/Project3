@@ -6,7 +6,7 @@ class Navbar extends React.Component {
       <nav>
         <div className="nav-wrapper">
           <a href="/" className="brand-logo">
-            Logo
+            Track-A-Task
           </a>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
             <li>
@@ -14,6 +14,9 @@ class Navbar extends React.Component {
             </li>
             <li>
               <a href="/tasks">Tasks</a>
+            </li>
+            <li>
+              <a href="/task">Create a List</a>
             </li>
             <li>
               <a href="/">Home</a>
