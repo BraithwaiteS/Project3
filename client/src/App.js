@@ -78,17 +78,21 @@ class App extends Component {
     //API to update task
     //setState to reflect changes
     event.preventDefault();
+    // args = { taskName: "TEST", dueDate: "05/01/2019", completed: "N" };
     alert("boom");
     API.addTask();
-    // API.addTask(
-    //   this.state.userId,
-    //   this.state.userEmail,
-    //   this.state.userPhone
-    // ).then(
-    //   API.findAllTasks(this.state.userId).then(res =>
-    //     this.setState({ tasks: [] })
-    //   )
-    // );
+    API.addTask(
+      // this.state.task.taskName,
+      // this.state.userEmail,
+      // this.state.userPhone
+
+      // { taskName: this.state.task.taskName, dueDate: this.state.task.dueDate }
+      { taskName: "Another TEST", dueDate: "2019/05/01" }
+    ).then(
+      API.findAllTasks(this.state.userId).then(res =>
+        this.setState({ tasks: [] })
+      )
+    );
   };
   render() {
     return (
@@ -100,7 +104,9 @@ class App extends Component {
             <Route
               exact
               path="/"
-              render={props => <Home handleFormSubmit={this.findTasks} />}
+              render={props => (
+                <Home handleFormSubmit={this.handleFormSubmit} />
+              )}
             />
 
             {/* <Route exact path="/login" component={Login} /> */}

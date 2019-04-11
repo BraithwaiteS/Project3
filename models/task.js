@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
         }
       }
     },
-    due_date: {
+    dueDate: {
       type: DataTypes.DATE,
       allowNull: true,
       validate: {
@@ -23,7 +23,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       defaultValue: "N",
       validate: {
-        isIn: [['y', 'n', 'Y', 'N']]
+        isIn: [["y", "n", "Y", "N"]]
       }
     }
   });

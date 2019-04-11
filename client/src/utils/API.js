@@ -8,12 +8,11 @@ export default {
   },
   findAllTasks: args => {
     //call to find all tasks
-    alert("findAllTasks");
     return axios.get("/api/tasks", { params: { userId: args } });
   },
   addTask: args => {
     //call to add task
-    return axios.post("/api/task", { params: { q: args } });
+    return axios.post("/api/task", args);
   },
   deleteTask: args => {
     //call to delete task
