@@ -1,7 +1,9 @@
 const router = require("express").Router();
 const tasksRoutes = require("./tasks");
+const usersRoutes = require("./users");
 
-// Book routes
-router.use("/tasks", tasksRoutes);
+// todo list routes
+router.use("/api", tasksRoutes);
+router.use("/api", usersRoutes);
 
 module.exports = router;

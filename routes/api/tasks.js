@@ -1,17 +1,56 @@
+// Routes
+// =============================================================
+// Requiring our Todo model
+var db = require("../../models");
 const router = require("express").Router();
-const booksController = require("../../controllers/tasksController");
 
-// Matches with "/api/tasks"
-router
-  .route("/")
-  .get(booksController.findAll) //change this to the tasksController findall sequelize equivilent
-  .post(booksController.create); //change this to the tasksController create sequelize equivilent
+// Get route for returning a specific user
+router.get("/tasks", function(req, res) {
+  db.Task.findAll({
+    where: {
+      UserId: req.query.userId
+    }
+  }).then(function(dbTask) {
+    res.json(dbTask);
+  });
+});
 
-// Matches with "/api/tasks/:id"
-router
-  .route("/:id")
-  .get(booksController.findById) //change this to the tasksController findbyid sequelize equivilent
-  .put(booksController.update) //change this to the tasksController update sequelize equivilent
-  .delete(booksController.remove); //change this to the tasksController remove sequelize equivilent
+// POST route for saving a new task
+router.post("/task", function(req, res) {
+  console.log(req.body);
+  db.Task.create({
+    taskName: req.body.taskName,
+    due_date: req.body.due_date,
+    UserId: req.body.userId
+  })
+    .then(function(dbTask) {
+      res.json(dbTask);
+    })
+    .catch(function(error) {
+      res.send(error);
+    });
+});
+
+// DELETE route for deleting task
+router.delete("/task", function(req, res) {
+  db.Task.destroy({
+    where: {
+      id: req.query.id
+    }
+  }).then(function(dbTask) {
+    res.json(dbTask);
+  });
+});
+
+// PUT route for updating task
+router.put("/task", function(req, res) {
+  db.Task.update(req.body, {
+    where: {
+      id: req.body.id
+    }
+  }).then(function(dbTask) {
+    res.json(dbTask);
+  });
+});
 
 module.exports = router;

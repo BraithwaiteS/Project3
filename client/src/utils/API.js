@@ -1,24 +1,25 @@
 import axios from "axios";
 
 export default {
-  findOneTask: query => {
+  findOneTask: args => {
     //call to find one task
-    return axios.get("/api/task:", { params: { ID: query } });
+    return axios.get("/api/task", { params: { ID: args } });
+    // return axios.get("/api/task?userId=" + args);
   },
-  findAllTasks: query => {
+  findAllTasks: args => {
     //call to find all tasks
-    return axios.get("/api/tasks", { params: { email: query } });
+    return axios.get("/api/tasks", { params: { userId: args } });
   },
-  addTask: query => {
+  addTask: args => {
     //call to add task
-    return axios.post("/api/task", { params: { q: query } });
+    return axios.post("/api/task", args);
   },
-  deleteTask: query => {
+  deleteTask: args => {
     //call to delete task
-    return axios.delete("/api/task", { params: { ID: query } });
+    return axios.delete("/api/task", { params: { ID: args } });
   },
-  updateTask: query => {
+  updateTask: args => {
     //call to update task
-    return axios.put("/api/task", { params: { ID: query } });
+    return axios.put("/api/task", { params: { ID: args } });
   }
 };
