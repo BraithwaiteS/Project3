@@ -10,37 +10,67 @@ import API from "./utils/API";
 
 class App extends Component {
   state = {
-    userId: 0,
+    userId: "1",
+    userName: "",
     userPhone: "",
     userEmail: "",
     tasks: [],
     task: {
+      id: "",
       taskName: "",
       dueDate: "",
       completed: ""
     }
   };
-  componentDidMount() {}
-  findTasks() {
+  componentDidMount = () => {
+    this.setState({ userId: "1" });
+  };
+  fineOneTask = () => {
+    let myTask = {};
+    let stateTask = {};
+    API.findOneTask(this.state.task.id).then(res => {
+      myTask = res.data;
+    });
+    stateTask = this.state.task;
+    stateTask.taskName = myTask.taskName;
+    stateTask.complete = myTask.complete;
+    stateTask.dueDate = myTask.dueDate;
+    this.setState({ task: stateTask });
+  };
+  findTasks = () => {
     alert("findTasks");
-    API.findAllTasks();
-  }
-  handleRegister() {
+    let myId = this.state.userId;
+    alert(myId);
+
+    // API.findAllTasks({ userId: "1" }).then(res =>
+    //   this.setState({ tasks: res.data })
+    // );
+    API.findAllTasks({ userId: this.state.userId }).then(res =>
+      console.log(res.data)
+    );
+  };
+  handleRegister = () => {
     //API to create user
     //setState to user profile info
+    API.addUser({
+      xxx: this.state.userName,
+      yyy: this.state.userPhone,
+      zzz: this.state.userEmail
+    });
     this.setState({ userId: "", userPhone: "", userEmail: "" });
-  }
+  };
 
-  handleLogin() {
+  handleLogin = () => {
     //API to find all user's tasks
     //setState to user profile info, tasks
     API.findAllTasks().then(res =>
       this.setState({ userId: "", userPhone: "", userEmail: "", tasks: [] })
     );
-  }
-  handleDelete(taskId) {
+  };
+  handleDelete = taskId => {
     //API to delete task
     //setState to reflect changes
+    taskId = 2;
     let taskObj = this.state.task;
     taskObj.completed = "";
     taskObj.dueDate = "";
@@ -48,26 +78,30 @@ class App extends Component {
 
     API.deleteTask(taskId).then(
       API.findAllTasks(this.state.userId).then(res =>
-        // this.setState({ tasks: [] })
-
-        this.setState({ tasks: [], task: taskObj })
+        this.setState({ tasks: res.data, task: taskObj })
       )
     );
-  }
-  handleUpdate(taskId) {
+  };
+  handleUpdate = taskId => {
     //API to update task
     //setState to reflect changes
     let taskObj = this.state.task;
     taskObj.completed = "";
     taskObj.dueDate = "";
     taskObj.taskName = "";
+    let myArgs = {
+      id: "1",
+      taskName: "More TESTs NOOOOOO",
+      dueDate: "2019/05/03",
+      userId: this.state.userId
+    };
 
-    API.updateTask(taskId).then(
+    API.updateTask(myArgs).then(
       API.findAllTasks(this.state.userId).then(res =>
-        this.setState({ tasks: [], task: taskObj })
+        this.setState({ tasks: res.data, task: taskObj })
       )
     );
-  }
+  };
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -78,19 +112,17 @@ class App extends Component {
     //API to update task
     //setState to reflect changes
     event.preventDefault();
-    // args = { taskName: "TEST", dueDate: "05/01/2019", completed: "N" };
-    alert("boom");
-    API.addTask();
-    API.addTask(
-      // this.state.task.taskName,
-      // this.state.userEmail,
-      // this.state.userPhone
 
+    API.addTask(
       // { taskName: this.state.task.taskName, dueDate: this.state.task.dueDate }
-      { taskName: "Another TEST", dueDate: "2019/05/01" }
+      {
+        taskName: "More TESTs",
+        dueDate: "2019/05/03",
+        userId: this.state.userId
+      }
     ).then(
       API.findAllTasks(this.state.userId).then(res =>
-        this.setState({ tasks: [] })
+        this.setState({ tasks: res.data })
       )
     );
   };
@@ -104,9 +136,7 @@ class App extends Component {
             <Route
               exact
               path="/"
-              render={props => (
-                <Home handleFormSubmit={this.handleFormSubmit} />
-              )}
+              render={props => <Home handleFormSubmit={this.handleUpdate} />}
             />
 
             {/* <Route exact path="/login" component={Login} /> */}
@@ -114,7 +144,11 @@ class App extends Component {
               exact
               path="/login"
               render={props => (
-                <Login {...props} handleLogin={this.handleLogin} />
+                <Login
+                  {...props}
+                  handleLogin={this.handleLogin}
+                  handleInputChange={this.handleInputChange}
+                />
               )}
             />
 
@@ -123,7 +157,11 @@ class App extends Component {
               exact
               path="/register"
               render={props => (
-                <Register {...props} handleRegister={this.handleRegister} />
+                <Register
+                  {...props}
+                  handleRegister={this.handleRegister}
+                  handleInputChange={this.handleInputChange}
+                />
               )}
             />
             {/* <Route path="/Task" component={Task} /> */}
@@ -135,11 +173,15 @@ class App extends Component {
                   handleNew={this.handleNew}
                   handleUpdate={this.handleUpdate}
                   handleDelete={this.handleDelete}
+                  handleInputChange={this.handleInputChange}
                 />
               )}
             />
-            {/* No need to pass anything to Tasks page */}
-            <Route path="/Tasks" component={Tasks} />
+            <Route
+              path="/Tasks"
+              component={Tasks}
+              handleDelete={this.handleDelete}
+            />
           </div>
         </Router>
       </div>

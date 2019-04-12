@@ -5,10 +5,10 @@ var db = require("../../models");
 const router = require("express").Router();
 
 // Get route for returning a specific user
-router.get("/tasks", function(req, res) {
+router.get("/tasks/:ID", function(req, res) {
   db.Task.findAll({
     where: {
-      UserId: req.query.userId
+      UserId: req.params.ID
     }
   }).then(function(dbTask) {
     res.json(dbTask);
@@ -17,10 +17,9 @@ router.get("/tasks", function(req, res) {
 
 // POST route for saving a new task
 router.post("/task", function(req, res) {
-  console.log(req.body);
   db.Task.create({
     taskName: req.body.taskName,
-    due_date: req.body.due_date,
+    dueDate: req.body.dueDate,
     UserId: req.body.userId
   })
     .then(function(dbTask) {
@@ -32,10 +31,10 @@ router.post("/task", function(req, res) {
 });
 
 // DELETE route for deleting task
-router.delete("/task", function(req, res) {
+router.delete("/task/:ID", function(req, res) {
   db.Task.destroy({
     where: {
-      id: req.query.id
+      id: req.params.ID
     }
   }).then(function(dbTask) {
     res.json(dbTask);
