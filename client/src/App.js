@@ -40,10 +40,6 @@ class App extends Component {
     this.setState({ task: stateTask });
   };
   findTasks = () => {
-    alert("findTasks");
-    let myId = this.state.userId;
-    alert(myId);
-
     API.findAllTasks({ userId: this.state.userId }).then(res =>
       console.log(res.data)
     );
@@ -56,15 +52,20 @@ class App extends Component {
       email: this.state.userEmail,
       phone: this.state.userPhone
     });
-    this.setState({ userId: "", userPhone: "", userEmail: "" });
   };
 
   handleLogin = () => {
     //API to find all user's tasks
     //setState to user profile info, tasks
-    API.findAllTasks().then(res =>
-      this.setState({ userId: "", userPhone: "", userEmail: "", tasks: [] })
-    );
+    API.findAllTasks().then(res => {
+      //Set the user information and tasks
+      this.setState({
+        userId: "",
+        userPhone: "",
+        userEmail: "",
+        tasks: res.data
+      });
+    });
   };
   handleDelete = taskId => {
     //API to delete task
@@ -89,9 +90,9 @@ class App extends Component {
     taskObj.dueDate = "";
     taskObj.taskName = "";
     let myArgs = {
-      id: "1",
-      taskName: "More TESTs NOOOOOO",
-      dueDate: "2019/05/03",
+      id: this.state.task.id,
+      taskName: this.state.task.taskName,
+      dueDate: this.state.task.dueDate,
       userId: this.state.userId
     };
 
@@ -112,14 +113,10 @@ class App extends Component {
     //setState to reflect changes
     event.preventDefault();
 
-    API.addTask(
-      // { taskName: this.state.task.taskName, dueDate: this.state.task.dueDate }
-      {
-        taskName: "Testing again and again",
-        dueDate: "2019/05/10",
-        userId: this.state.userId
-      }
-    ).then(
+    API.addTask({
+      taskName: this.state.task.taskName,
+      dueDate: this.state.task.dueDate
+    }).then(
       API.findAllTasks({ userId: this.state.userId }).then(res => {
         console.log(res.data);
         this.setState({ tasks: res.data });
