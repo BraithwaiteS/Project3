@@ -15,6 +15,17 @@ router.get("/tasks/:ID", function(req, res) {
   });
 });
 
+// Get route for retrieving a single task
+router.get("/task/:id", function(req, res) {
+  db.Task.findOne({
+    where: {
+      id: req.query.id
+    }
+  }).then(function(dbTask) {
+    res.json(dbTask);
+  });
+});
+
 // POST route for saving a new task
 router.post("/task", function(req, res) {
   // console.log(JSON.stringify(req.body.taskName));
