@@ -76,7 +76,7 @@ class App extends Component {
     taskObj.taskName = "";
 
     API.deleteTask(taskId).then(
-      API.findAllTasks(this.state.userId).then(res =>
+      API.findAllTasks({ userId: this.state.userId }).then(res =>
         this.setState({ tasks: res.data, task: taskObj })
       )
     );
@@ -96,7 +96,7 @@ class App extends Component {
     };
 
     API.updateTask(myArgs).then(
-      API.findAllTasks(this.state.userId).then(res =>
+      API.findAllTasks({ userId: this.state.userId }).then(res =>
         this.setState({ tasks: res.data, task: taskObj })
       )
     );
@@ -115,14 +115,15 @@ class App extends Component {
     API.addTask(
       // { taskName: this.state.task.taskName, dueDate: this.state.task.dueDate }
       {
-        taskName: "More TESTs",
-        dueDate: "2019/05/03",
+        taskName: "Testing again and again",
+        dueDate: "2019/05/10",
         userId: this.state.userId
       }
     ).then(
-      API.findAllTasks(this.state.userId).then(res =>
-        this.setState({ tasks: res.data })
-      )
+      API.findAllTasks({ userId: this.state.userId }).then(res => {
+        console.log(res.data);
+        this.setState({ tasks: res.data });
+      })
     );
   };
   render() {
@@ -135,18 +136,15 @@ class App extends Component {
             <Route
               exact
               path="/"
-              render={props => (
-                <Home handleFormSubmit={this.handleFormSubmit} />
-              )}
+              render={() => <Home handleFormSubmit={this.handleFormSubmit} />}
             />
 
             {/* <Route exact path="/login" component={Login} /> */}
             <Route
               exact
               path="/login"
-              render={props => (
+              render={() => (
                 <Login
-                  {...props}
                   handleLogin={this.handleLogin}
                   handleInputChange={this.handleInputChange}
                 />
@@ -157,9 +155,8 @@ class App extends Component {
             <Route
               exact
               path="/register"
-              render={props => (
+              render={() => (
                 <Register
-                  {...props}
                   handleRegister={this.handleRegister}
                   handleInputChange={this.handleInputChange}
                 />
@@ -168,7 +165,7 @@ class App extends Component {
             {/* <Route path="/Task" component={Task} /> */}
             <Route
               path="/Task/:taskId"
-              render={props => (
+              render={() => (
                 <Task
                   task={this.state.task}
                   handleNew={this.handleNew}

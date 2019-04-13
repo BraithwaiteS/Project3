@@ -17,7 +17,8 @@ router.get("/tasks/:ID", function(req, res) {
 
 // POST route for saving a new task
 router.post("/task", function(req, res) {
-  console.log(JSON.stringify(req.body));
+  // console.log(JSON.stringify(req.body.taskName));
+  console.log(req.body);
   db.Task.create({
     taskName: req.body.taskName,
     dueDate: req.body.dueDate,
