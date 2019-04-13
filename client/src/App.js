@@ -16,7 +16,7 @@ class App extends Component {
     userEmail: "",
     tasks: [],
     task: {
-      id: "",
+      id: "1",
       taskName: "",
       dueDate: "",
       completed: ""
@@ -25,12 +25,14 @@ class App extends Component {
   componentDidMount = () => {
     this.setState({ userId: "1" });
   };
-  fineOneTask = () => {
+  findOneTask = () => {
+    alert(this.state.task.id);
     let myTask = {};
     let stateTask = {};
     API.findOneTask(this.state.task.id).then(res => {
       myTask = res.data;
     });
+    console.log(myTask);
     stateTask = this.state.task;
     stateTask.taskName = myTask.taskName;
     stateTask.complete = myTask.complete;
@@ -42,9 +44,6 @@ class App extends Component {
     let myId = this.state.userId;
     alert(myId);
 
-    // API.findAllTasks({ userId: "1" }).then(res =>
-    //   this.setState({ tasks: res.data })
-    // );
     API.findAllTasks({ userId: this.state.userId }).then(res =>
       console.log(res.data)
     );
@@ -53,9 +52,9 @@ class App extends Component {
     //API to create user
     //setState to user profile info
     API.addUser({
-      xxx: this.state.userName,
-      yyy: this.state.userPhone,
-      zzz: this.state.userEmail
+      userName: this.state.userName,
+      email: this.state.userEmail,
+      phone: this.state.userPhone
     });
     this.setState({ userId: "", userPhone: "", userEmail: "" });
   };
@@ -136,7 +135,9 @@ class App extends Component {
             <Route
               exact
               path="/"
-              render={props => <Home handleFormSubmit={this.handleUpdate} />}
+              render={props => (
+                <Home handleFormSubmit={this.handleFormSubmit} />
+              )}
             />
 
             {/* <Route exact path="/login" component={Login} /> */}
@@ -169,7 +170,7 @@ class App extends Component {
               path="/Task/:taskId"
               render={props => (
                 <Task
-                  {...props}
+                  task={this.state.task}
                   handleNew={this.handleNew}
                   handleUpdate={this.handleUpdate}
                   handleDelete={this.handleDelete}
@@ -180,6 +181,7 @@ class App extends Component {
             <Route
               path="/Tasks"
               component={Tasks}
+              tasks={this.state.tasks}
               handleDelete={this.handleDelete}
             />
           </div>
