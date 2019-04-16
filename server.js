@@ -6,9 +6,18 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 const db = require("./models");
 const routes = require("./routes/api");
+const cors = require("cors"); //needed to disable sendgrid security
+const sgMail = require("@sendgrid/mail"); //sendgrid library to send emails
+// const Sequelize = require("sequelize");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// key for sendgrid
+console.log("key", process.env.SENDGRID_API_KEY);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+app.use(cors());
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
@@ -47,3 +56,40 @@ db.sequelize.sync(syncOptions).then(function() {
   });
 });
 // console.log(process.env.TWILIO_ACCT_SID);
+
+// EMAIL INFO
+// Move to server.js???
+
+// const express = require("express");
+
+// Welcome Page for sendgrid server
+app.get("/", (req, res) => {
+  res.send("welcome to the send grid server");
+});
+
+app.get("/send-email", (req, res) => {
+  // get info
+  const { recipient } = req.query;
+  //   , sender, topic, text.....might need to add these back into above const
+  console.log("foo");
+  // sendgrid data
+  console.log(req);
+
+  const msg = {
+    to: recipient,
+    from: "gettrackatask@gmail.com",
+    subject: "Account Created!",
+    text: "Welcome!"
+  };
+
+  // send email
+  sgMail
+    .send(msg)
+    .then(msg => {
+      console.log("mgs", msg);
+      res.send("welcome to the send grid server");
+    })
+    .catch(err => console.log(err));
+});
+// Email listen
+app.listen(3100, () => console.log("running on port 3100"));
