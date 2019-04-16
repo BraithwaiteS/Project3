@@ -1,10 +1,11 @@
+require("dotenv").config();
+
 const express = require("express");
 const path = require("path");
 const PORT = process.env.PORT || 3001;
 const app = express();
 const db = require("./models");
 const routes = require("./routes/api");
-// const Sequelize = require("sequelize");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -45,3 +46,4 @@ db.sequelize.sync(syncOptions).then(function() {
     );
   });
 });
+// console.log(process.env.TWILIO_ACCT_SID);

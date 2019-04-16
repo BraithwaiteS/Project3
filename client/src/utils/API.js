@@ -27,5 +27,9 @@ export default {
   },
   findOneUser: args => {
     return axios.get("/api/user/" + args);
+  },
+  sendText: args => {
+    alert("getting ready to post");
+    return axios.post("/api/text", args);
   }
 };

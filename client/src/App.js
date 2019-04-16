@@ -12,18 +12,25 @@ class App extends Component {
   state = {
     userId: "1",
     userName: "",
-    userPhone: "",
+    userPhone: "7037288798",
     userEmail: "",
+    password: "",
+
     tasks: [],
     task: {
       id: "1",
       taskName: "",
       dueDate: "",
       completed: ""
-    }
+    },
+    message: ""
   };
   componentDidMount = () => {
     this.setState({ userId: "1" });
+  };
+  sendMessage = () => {
+    let msg = "You have a task due.  Check Track-a-Task!";
+    API.sendText({ phone: this.state.userPhone, message: msg });
   };
   findOneTask = () => {
     alert(this.state.task.id);
@@ -50,7 +57,8 @@ class App extends Component {
     API.addUser({
       userName: this.state.userName,
       email: this.state.userEmail,
-      phone: this.state.userPhone
+      phone: this.state.userPhone,
+      password: this.state.password
     });
   };
 
@@ -133,7 +141,12 @@ class App extends Component {
             <Route
               exact
               path="/"
-              render={() => <Home handleFormSubmit={this.handleFormSubmit} />}
+              render={() => (
+                <Home
+                  message={this.state.message}
+                  handleFormSubmit={this.sendMessage}
+                />
+              )}
             />
 
             {/* <Route exact path="/login" component={Login} /> */}
