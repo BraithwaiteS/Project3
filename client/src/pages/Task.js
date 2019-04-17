@@ -31,6 +31,7 @@ class Task extends Component {
                           className="btn waves-effect waves-light"
                           type="submit"
                           name="action"
+                          onClick={this.props.handleFormSubmit}
                         >
                           Create Task
                           <i className="material-icons right">border_color</i>

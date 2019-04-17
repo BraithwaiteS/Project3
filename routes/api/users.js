@@ -17,6 +17,7 @@ router.get("/users", function(req, res) {
 // POST route for saving a new user
 router.post("/user", function(req, res) {
   console.log(req.body);
+  console.log(db.User);
   db.User.create({
     userName: req.body.userName,
     email: req.body.userEmail,

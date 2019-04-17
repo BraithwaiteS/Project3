@@ -117,6 +117,7 @@ class Register extends Component {
             className="btn waves-effect waves-light"
             type="submit"
             name="action"
+            onClick={this.props.handleLogin}
           >
             Have An Account? Sign In
             <i className="material-icons right">account_circle</i>

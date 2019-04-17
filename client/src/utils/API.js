@@ -11,6 +11,7 @@ export default {
   },
   addTask: args => {
     //call to add task
+    alert(args);
     return axios.post("/api/task", args);
   },
   deleteTask: args => {

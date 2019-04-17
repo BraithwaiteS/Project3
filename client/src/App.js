@@ -20,10 +20,14 @@ const handleAuthentication = ({ location }) => {
 };
 
 class App extends Component {
+  constructor() {
+    super();
+    this.login = this.login.bind(this);
+  }
   state = {
     userId: "1",
     userName: "",
-    userPhone: "",
+    userPhone: "7037288798",
     userEmail: "",
     password: "",
     newTaskId: "",
@@ -39,15 +43,6 @@ class App extends Component {
     },
     message: ""
   };
-  goTo(route) {
-    this.history.replace(`/${route}`);
-  }
-  login() {
-    this.auth.login();
-  }
-  logout() {
-    this.auth.logout();
-  }
 
   componentDidMount = () => {
     this.setState({ userId: "1" });
@@ -58,14 +53,31 @@ class App extends Component {
       }
     }
   };
+
+  //----Auth0 functions----//
+  goTo(route) {
+    this.history.replace(`/${route}`);
+  }
+  login() {
+    this.auth.login();
+  }
+  logout() {
+    this.auth.logout();
+  }
+
+  //-----SendGrid Function, calls API function to logic on server-------//
   sendEmail = () => {
     let msg = "You have a task due.  Check Track-a-Task!";
     API.sendEmail({ email: this.state.userEmail });
   };
+
+  //------Twilio Function, calls API function to logic on server-------//
   sendMessage = () => {
     let msg = "You have a task due.  Check Track-a-Task!";
     API.sendText({ phone: this.state.userPhone, message: msg });
   };
+
+  //------ Sequelize functions, calls API function to logic on server----//
   findOneTask = () => {
     alert(this.state.task.id);
     let myTask = {};
@@ -94,12 +106,23 @@ class App extends Component {
       userName: this.state.userName,
       email: this.state.userEmail,
       phone: this.state.userPhone
+    }).then(res => {
+      if (res) {
+        // this.login();
+        console.log("hello");
+      } else {
+        // this.login(); //For test.  remove when add user works.
+        console.log("goodbye");
+      }
     });
   };
 
-  handleLogin = () => {
+  handleLogin = event => {
     //API to find all user's tasks
     //setState to user profile info, tasks
+    event.preventDefault();
+    this.login();
+
     API.findAllTasks().then(res => {
       //Set the user information and tasks
       this.setState({
@@ -146,20 +169,21 @@ class App extends Component {
     );
   };
   handleInputChange = event => {
-    alert(event.target.name + " | " + event.target.value);
+    // alert(event.target.name + " | " + event.target.value);
     const { name, value } = event.target;
     this.setState({
       [name]: value
     });
   };
   handleFormSubmit = event => {
-    //API to update task
+    //API to Add task
     //setState to reflect changes
     event.preventDefault();
 
     API.addTask({
-      taskName: this.state.newTaskName,
-      dueDate: this.state.newTaskDueDate
+      taskName: "static task text",
+      dueDate: "",
+      userId: "1"
     }).then(
       API.findAllTasks({ userId: this.state.userId }).then(res => {
         console.log(res.data);
@@ -180,7 +204,7 @@ class App extends Component {
               render={() => (
                 <Home
                   message={this.state.message}
-                  handleFormSubmit={this.sendEmail}
+                  handleFormSubmit={this.sendMessage}
                 />
               )}
             />
@@ -204,6 +228,7 @@ class App extends Component {
               render={() => (
                 <RegisterPage
                   handleRegister={this.handleRegister}
+                  handleLogin={this.handleLogin}
                   handleInputChange={this.handleInputChange}
                   userName={this.state.userName}
                   userPhone={this.state.userPhone}

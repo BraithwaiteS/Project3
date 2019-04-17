@@ -33,9 +33,11 @@ router.post("/task", function(req, res) {
   db.Task.create({
     taskName: req.body.taskName,
     dueDate: req.body.dueDate,
+    completed: "N",
     UserId: req.body.userId
   })
     .then(function(dbTask) {
+      console.log(res.json(dbTask));
       res.json(dbTask);
     })
     .catch(function(error) {
