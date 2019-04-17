@@ -1,3 +1,6 @@
-nav{
-    color: blue;
+nav {
+  color: blue;
+}
+.myNav {
+  cursor: pointer !important;
 }

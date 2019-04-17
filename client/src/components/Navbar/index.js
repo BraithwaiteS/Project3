@@ -9,14 +9,17 @@ class Navbar extends React.Component {
             Track-A-Task
           </a>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
-            <li>
-              <a href="/login">Log In</a>
+            <li className="myNav">
+              <a href="/register">Register/Log In</a>
+            </li>
+            <li className="myNav" onClick={this.props.auth.logout}>
+              <a href="#">Log Out</a>
             </li>
             <li>
               <a href="/tasks">Tasks</a>
             </li>
             <li>
-              <a href="/task">Create a List</a>
+              <a href="/newTask">Add a Task</a>
             </li>
             <li>
               <a href="/">Home</a>

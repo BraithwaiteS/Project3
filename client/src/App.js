@@ -1,21 +1,35 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
+// import Register from "./pages/Register";
+import RegisterPage from "./components/RegisterPage";
 import Task from "./pages/Task";
 import Tasks from "./pages/Tasks";
 import API from "./utils/API";
+import Auth from "./Auth";
+import history from "./history";
+// import Callback from "./compoenents/Callback";
+
+const auth = new Auth();
+const handleAuthentication = ({ location }) => {
+  if (/access_token|id_token|error/.test(location.hash)) {
+    auth.handleAuthentication();
+  }
+};
 
 class App extends Component {
   state = {
     userId: "1",
     userName: "",
-    userPhone: "7037288798",
+    userPhone: "",
     userEmail: "",
     password: "",
-
+    newTaskId: "",
+    newTaskName: "",
+    newTaskDueDate: "",
+    newTaskCompleted: "",
     tasks: [],
     task: {
       id: "1",
@@ -25,8 +39,28 @@ class App extends Component {
     },
     message: ""
   };
+  goTo(route) {
+    this.history.replace(`/${route}`);
+  }
+  login() {
+    this.auth.login();
+  }
+  logout() {
+    this.auth.logout();
+  }
+
   componentDidMount = () => {
     this.setState({ userId: "1" });
+    if (this.auth) {
+      const { renewSession } = this.auth;
+      if (localStorage.getItem("isLoggedIn") === "true") {
+        renewSession();
+      }
+    }
+  };
+  sendEmail = () => {
+    let msg = "You have a task due.  Check Track-a-Task!";
+    API.sendEmail({ email: this.state.userEmail });
   };
   sendMessage = () => {
     let msg = "You have a task due.  Check Track-a-Task!";
@@ -51,14 +85,15 @@ class App extends Component {
       console.log(res.data)
     );
   };
-  handleRegister = () => {
+  handleRegister = event => {
+    event.preventDefault();
     //API to create user
     //setState to user profile info
+
     API.addUser({
       userName: this.state.userName,
       email: this.state.userEmail,
-      phone: this.state.userPhone,
-      password: this.state.password
+      phone: this.state.userPhone
     });
   };
 
@@ -111,6 +146,7 @@ class App extends Component {
     );
   };
   handleInputChange = event => {
+    alert(event.target.name + " | " + event.target.value);
     const { name, value } = event.target;
     this.setState({
       [name]: value
@@ -122,8 +158,8 @@ class App extends Component {
     event.preventDefault();
 
     API.addTask({
-      taskName: this.state.task.taskName,
-      dueDate: this.state.task.dueDate
+      taskName: this.state.newTaskName,
+      dueDate: this.state.newTaskDueDate
     }).then(
       API.findAllTasks({ userId: this.state.userId }).then(res => {
         console.log(res.data);
@@ -134,8 +170,8 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Router>
-          <Navbar />
+        <Router history={history}>
+          <Navbar auth={auth} />
           <div>
             {/* <Route exact path="/" component={Home} /> */}
             <Route
@@ -144,7 +180,7 @@ class App extends Component {
               render={() => (
                 <Home
                   message={this.state.message}
-                  handleFormSubmit={this.sendMessage}
+                  handleFormSubmit={this.sendEmail}
                 />
               )}
             />
@@ -166,30 +202,57 @@ class App extends Component {
               exact
               path="/register"
               render={() => (
-                <Register
+                <RegisterPage
                   handleRegister={this.handleRegister}
                   handleInputChange={this.handleInputChange}
+                  userName={this.state.userName}
+                  userPhone={this.state.userPhone}
+                  userEmail={this.state.userEmail}
                 />
               )}
             />
             {/* <Route path="/Task" component={Task} /> */}
             <Route
-              path="/Task/:taskId"
+              path="/newTask"
               render={() => (
+                // !auth.isAuthenticated() ? (
+                //   <Redirect to="/home" />
+                // ) : (
+                //   <Task
+                //     task={this.state.task}
+                //     handleNew={this.handleNew}
+                //     handleUpdate={this.handleUpdate}
+                //     handleDelete={this.handleDelete}
+                //     handleInputChange={this.handleInputChange}
+                //   />
+                // )
                 <Task
-                  task={this.state.task}
-                  handleNew={this.handleNew}
+                  newTaskName={this.state.newTaskName}
                   handleUpdate={this.handleUpdate}
                   handleDelete={this.handleDelete}
                   handleInputChange={this.handleInputChange}
+                  handleFormSubmit={this.handleFormSubmit}
                 />
               )}
             />
             <Route
               path="/Tasks"
-              component={Tasks}
-              tasks={this.state.tasks}
-              handleDelete={this.handleDelete}
+              render={() => (
+                // !auth.isAuthenticated() ? (
+                //   <Redirect to="/home" />
+                // ) : (
+                //   <Tasks
+                //     task={this.state.tasks}
+                //     sendMessage={this.sendMessage}
+                //     sendEmail={this.sendEmail}
+                //   />
+                // )
+                <Tasks
+                  task={this.state.tasks}
+                  sendMessage={this.sendMessage}
+                  sendEmail={this.sendEmail}
+                />
+              )}
             />
           </div>
         </Router>

@@ -13,7 +13,7 @@ router.post("/text", function(req, res) {
   let myPhone = "+1" + req.body.phone;
   client.messages.create({
     to: myPhone,
-    from: process.env.TWILIO_SEND_NUM,
+    from: fromPhone,
     body: req.body.message
   });
 });

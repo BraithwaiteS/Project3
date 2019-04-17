@@ -13,4 +13,21 @@ router.get("/users", function(req, res) {
     res.json(dbUser);
   });
 });
+
+// POST route for saving a new user
+router.post("/user", function(req, res) {
+  console.log(req.body);
+  db.User.create({
+    userName: req.body.userName,
+    email: req.body.userEmail,
+    phone: req.body.userPhone
+  })
+    .then(function(dbUser) {
+      console.log(dbUser);
+      res.json(dbUser);
+    })
+    .catch(function(error) {
+      res.send(error);
+    });
+});
 module.exports = router;
