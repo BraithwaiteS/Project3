@@ -3,6 +3,7 @@ import axios from "axios";
 export default {
   findOneTask: args => {
     //call to find one task
+    console.log(args);
     return axios.get("/api/task/" + args);
   },
   findAllTasks: args => {

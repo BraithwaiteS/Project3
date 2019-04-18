@@ -17,11 +17,13 @@ router.get("/tasks/:ID", function(req, res) {
 
 // Get route for retrieving a single task
 router.get("/task/:id", function(req, res) {
+  // console.log(req.params.id);
   db.Task.findOne({
     where: {
-      id: req.query.id
+      id: req.params.id
     }
   }).then(function(dbTask) {
+    // console.log(dbTask.dataValues);
     res.json(dbTask);
   });
 });
@@ -29,18 +31,17 @@ router.get("/task/:id", function(req, res) {
 // POST route for saving a new task
 router.post("/task", function(req, res) {
   // console.log(JSON.stringify(req.body.taskName));
-  console.log(req.body);
   db.Task.create({
     taskName: req.body.taskName,
-    dueDate: req.body.dueDate,
     completed: "N",
     UserId: req.body.userId
   })
     .then(function(dbTask) {
-      console.log(res.json(dbTask));
+      // console.log(res.json(dbTask));
       res.json(dbTask);
     })
     .catch(function(error) {
+      console.log("error", error);
       res.send(error);
     });
 });

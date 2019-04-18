@@ -11,12 +11,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     dueDate: {
       type: DataTypes.DATE,
-      allowNull: true,
-      validate: {
-        isDate: {
-          msg: "Enter a date."
-        }
-      }
+      allowNull: true
     },
     completed: {
       type: DataTypes.TEXT,

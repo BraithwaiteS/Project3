@@ -112,12 +112,12 @@ class Register extends Component {
           <i className="material-icons right">send</i>
         </button>
 
-        <a href="/login">
+        <a href="#">
           <button
             className="btn waves-effect waves-light"
             type="submit"
             name="action"
-            onClick={this.props.handleLogin}
+            onClick={this.props.auth.login}
           >
             Have An Account? Sign In
             <i className="material-icons right">account_circle</i>

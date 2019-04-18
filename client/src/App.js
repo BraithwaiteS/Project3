@@ -25,7 +25,7 @@ class App extends Component {
     this.login = this.login.bind(this);
   }
   state = {
-    userId: "1",
+    userId: 1,
     userName: "",
     userPhone: "7037288798",
     userEmail: "",
@@ -36,7 +36,7 @@ class App extends Component {
     newTaskCompleted: "",
     tasks: [],
     task: {
-      id: "1",
+      id: 1,
       taskName: "",
       dueDate: "",
       completed: ""
@@ -45,7 +45,7 @@ class App extends Component {
   };
 
   componentDidMount = () => {
-    this.setState({ userId: "1" });
+    this.setState({ userId: 1 });
     if (this.auth) {
       const { renewSession } = this.auth;
       if (localStorage.getItem("isLoggedIn") === "true") {
@@ -84,8 +84,9 @@ class App extends Component {
     let stateTask = {};
     API.findOneTask(this.state.task.id).then(res => {
       myTask = res.data;
+      console.log(myTask);
     });
-    console.log(myTask);
+
     stateTask = this.state.task;
     stateTask.taskName = myTask.taskName;
     stateTask.complete = myTask.complete;
@@ -108,7 +109,7 @@ class App extends Component {
       phone: this.state.userPhone
     }).then(res => {
       if (res) {
-        // this.login();
+        auth.login();
         console.log("hello");
       } else {
         // this.login(); //For test.  remove when add user works.
@@ -181,15 +182,18 @@ class App extends Component {
     event.preventDefault();
 
     API.addTask({
-      taskName: "static task text",
-      dueDate: "",
-      userId: "1"
-    }).then(
-      API.findAllTasks({ userId: this.state.userId }).then(res => {
-        console.log(res.data);
-        this.setState({ tasks: res.data });
-      })
-    );
+      taskName: this.state.newTaskName,
+      userId: this.state.userId
+    })
+      .then(
+        API.findAllTasks({ userId: 1 }).then(res => {
+          console.log("data", res.data);
+          this.setState({ tasks: res.data });
+        })
+      )
+      .catch(e => {
+        console.log(e);
+      });
   };
   render() {
     return (
@@ -204,7 +208,7 @@ class App extends Component {
               render={() => (
                 <Home
                   message={this.state.message}
-                  handleFormSubmit={this.sendMessage}
+                  handleFormSubmit={this.handleFormSubmit}
                 />
               )}
             />
@@ -227,6 +231,7 @@ class App extends Component {
               path="/register"
               render={() => (
                 <RegisterPage
+                  auth={auth}
                   handleRegister={this.handleRegister}
                   handleLogin={this.handleLogin}
                   handleInputChange={this.handleInputChange}

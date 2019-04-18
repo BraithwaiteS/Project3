@@ -5,10 +5,12 @@ const router = require("express").Router();
 // https://github.com/sendgrid/sendgrid-nodejs
 
 const sgMail = require("@sendgrid/mail");
+
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // POST route for saving a new task
 router.post("/email", function(req, res) {
+  console.log(process.env.SENDGRID_API_KEY);
   const msg = {
     to: "ericfinney1@gmail.com",
     from: "HeyTrackATask@gmail.com",

@@ -17,7 +17,6 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.TEXT,
         allowNull: false,
         validate: {
-          unique: true,
           isNumeric: true
         }
       }

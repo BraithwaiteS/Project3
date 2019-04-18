@@ -20,14 +20,15 @@ router.post("/user", function(req, res) {
   console.log(db.User);
   db.User.create({
     userName: req.body.userName,
-    email: req.body.userEmail,
-    phone: req.body.userPhone
+    email: req.body.email,
+    phone: req.body.phone
   })
     .then(function(dbUser) {
       console.log(dbUser);
       res.json(dbUser);
     })
     .catch(function(error) {
+      console.log("error", error);
       res.send(error);
     });
 });
