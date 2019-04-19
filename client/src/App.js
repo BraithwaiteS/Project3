@@ -10,7 +10,7 @@ import Tasks from "./pages/Tasks";
 import API from "./utils/API";
 import Auth from "./Auth";
 import history from "./history";
-// import Callback from "./compoenents/Callback";
+import Callback from "../src/components/Callback";
 
 const auth = new Auth();
 const handleAuthentication = ({ location }) => {
@@ -18,6 +18,11 @@ const handleAuthentication = ({ location }) => {
     auth.handleAuthentication();
   }
 };
+// const handleAuthentication = ({ nextState, replace }) => {
+//   if (/access_token|id_token|error/.test(nextState.location.hash)) {
+//     auth.handleAuthentication();
+//   }
+// };
 
 class App extends Component {
   constructor() {
@@ -28,7 +33,7 @@ class App extends Component {
     userId: 1,
     userName: "",
     userPhone: "7037288798",
-    userEmail: "",
+    userEmail: "ericfinney1@gmail.com",
     password: "",
     newTaskId: "",
     newTaskName: "",
@@ -45,13 +50,16 @@ class App extends Component {
   };
 
   componentDidMount = () => {
-    this.setState({ userId: 1 });
+    // this.setState({ userId: 1 });
     if (this.auth) {
       const { renewSession } = this.auth;
       if (localStorage.getItem("isLoggedIn") === "true") {
         renewSession();
+        alert(auth.email);
       }
+      console.log(JSON.stringify(auth));
     }
+    console.log(auth.getProfile);
   };
 
   //----Auth0 functions----//
@@ -189,6 +197,7 @@ class App extends Component {
         API.findAllTasks({ userId: 1 }).then(res => {
           console.log("data", res.data);
           this.setState({ tasks: res.data });
+          window.location.href = "/tasks";
         })
       )
       .catch(e => {
@@ -201,6 +210,13 @@ class App extends Component {
         <Router history={history}>
           <Navbar auth={auth} />
           <div>
+            <Route
+              path="/callback"
+              render={props => {
+                handleAuthentication(props);
+                return <Callback {...props} />;
+              }}
+            />
             {/* <Route exact path="/" component={Home} /> */}
             <Route
               exact
@@ -208,7 +224,8 @@ class App extends Component {
               render={() => (
                 <Home
                   message={this.state.message}
-                  handleFormSubmit={this.handleFormSubmit}
+                  sendEmail={this.sendEmail}
+                  sendMessage={this.sendMessage}
                 />
               )}
             />

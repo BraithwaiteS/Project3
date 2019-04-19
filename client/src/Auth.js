@@ -10,7 +10,7 @@ export default class Auth {
   auth0 = new auth0.WebAuth({
     domain: "task-tracker-2019.auth0.com",
     clientID: "SrBC5ggXhzU7lSpIRT5cWzfxk0THWE0n",
-    redirectUri: "http://localhost:3000/tasks",
+    redirectUri: "http://localhost:3000/callback",
     responseType: "token id_token",
     scope: "openid profile"
   });

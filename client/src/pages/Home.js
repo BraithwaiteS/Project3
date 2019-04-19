@@ -4,7 +4,6 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <h1>Home</h1>
         <div id="home">
           <h4>Get Organized</h4>
           <p id="home">
@@ -17,7 +16,12 @@ class Home extends Component {
             ever again!
           </p>
         </div>
-        <button onClick={this.props.handleFormSubmit}>Click Me</button>
+        <button className="waves-effect btn" onClick={this.props.sendEmail}>
+          <i className="material-icons right">email</i>Send Email
+        </button>
+        <button className="waves-effect btn" onClick={this.props.sendMessage}>
+          <i className="material-icons right">message</i>Send Text
+        </button>
       </div>
     );
   }
