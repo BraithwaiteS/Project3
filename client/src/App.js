@@ -59,7 +59,6 @@ class App extends Component {
       }
       console.log(JSON.stringify(auth));
     }
-    console.log(auth.getProfile);
   };
 
   //----Auth0 functions----//
