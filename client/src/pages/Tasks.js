@@ -4,7 +4,7 @@ class Tasks extends Component {
   render() {
     return (
       <div>
-        <MyPage />
+        <MyPage {...this.props} />
       </div>
     );
   }

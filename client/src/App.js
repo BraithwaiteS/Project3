@@ -39,7 +39,26 @@ class App extends Component {
     newTaskName: "",
     newTaskDueDate: "",
     newTaskCompleted: "",
-    tasks: [],
+    tasks: [
+      {
+        id: 1,
+        taskName: "Wash Cat",
+        dueDate: "",
+        completed: ""
+      },
+      {
+        id: 2,
+        taskName: "Wash Hamster",
+        dueDate: "",
+        completed: ""
+      },
+      {
+        id: 3,
+        taskName: "Drink",
+        dueDate: "",
+        completed: ""
+      }
+    ],
     task: {
       id: 1,
       taskName: "",

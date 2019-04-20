@@ -6,7 +6,12 @@ class Navbar extends React.Component {
       <nav>
         <div className="nav-wrapper">
           <a href="/" className="brand-logo">
-            Track-A-Task
+            <img
+              width={550}
+              height={70}
+              mode="fit"
+              src={require(`../Navbar/task.png`)}
+            />
           </a>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
             {/* <li className="myNav" onClick={this.props.auth.login}>

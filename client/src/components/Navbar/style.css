@@ -1,6 +1,14 @@
 nav {
-  color: blue;
+  /* color: blue; */
 }
 .myNav {
   cursor: pointer !important;
+}
+nav {
+  background-color: #161247;
+}
+
+img {
+  height: 128px;
+  width: 128px;
 }

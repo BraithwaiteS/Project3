@@ -7,30 +7,26 @@ class MyPage extends Component {
     const taskList = this.props.task.map(eachTask => {
       return (
         //   console.log(eachTask.id, "Yeah")
-        <tr>
-          <td>{eachTask.taskName}</td>
-          <td>
+        <li>
+          {eachTask.taskName}
+          <span align="right">
             <button className="btn waves-effect waves-light" onClick="">
               Completed
             </button>
-          </td>
-          <td>
             <button
               className="btn waves-effect waves-light"
               onClick={this.props.sendEmail}
             >
               Email
             </button>
-          </td>
-          <td>
             <button
               className="btn waves-effect waves-light"
               onClick={this.props.sendMessage}
             >
               Text
             </button>
-          </td>
-        </tr>
+          </span>
+        </li>
       );
     });
 
@@ -54,12 +50,7 @@ class MyPage extends Component {
                   <form className="col s12">
                     <div className="row">
                       <div className="input-field col s12">
-                        <table>
-                          <tbody>
-                            <tr>{taskList}</tr>
-                          </tbody>
-                        </table>
-                        {/* <ol></ol> */}
+                        <ol>{taskList}</ol>
                       </div>
 
                       {/* <!-- <div className="input-field col s6">
