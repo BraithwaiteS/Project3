@@ -12,7 +12,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 router.post("/email", function(req, res) {
   console.log(process.env.SENDGRID_API_KEY);
   const msg = {
-    to: "ericfinney1@gmail.com",
+    to: req.body.email,
     from: "HeyTrackATask@gmail.com",
     subject: "Reminder!! Task Due!!",
     text: "Log in to Track-A-Task for your to-do list.",
